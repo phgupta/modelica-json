@@ -73,40 +73,47 @@ logger.level = args.log
 var moFiles = ut.getMoFiles(args.mode, args.file)
 
 var jsonDict = {};
-for outputFormat in args.output.split("|") {
+outputs = args.output.split("|")
+outputs.forEach(function(outputFormat) {
   if (outputFormat === 'json' || outputFormat === 'html' || outputFormat === 'docx') {
-    if ('json' in json_dict) {
+    if ('json' in jsonDict) {
       jsonDict[outputFormat] = jsonDict['json']
     }
-    else if ('html' in outputFormat) {
+    else if ('html' in jsonDict) {
       jsonDict[outputFormat] = jsonDict['html']
     }
-    else if ('docx' in outputFormat) {
+    else if ('docx' in jsonDict) {
       jsonDict[outputFormat] = jsonDict['docx']
+    }
+    else {
+      // Parse the json representation for moFiles
+      jsonDict[outputFormat] = pa.getJSON(moFiles, args.mode, outputFormat)
     }
   }
   else {
     // Parse the json representation for moFiles
-    jsonDict[outputFormat] = pa.getJSON(moFiles, args.mode, args.output)
+    jsonDict[outputFormat] = pa.getJSON(moFiles, args.mode, outputFormat)
   }
-}
+});
 
 // // Parse the json representation for moFiles
 // var json = pa.getJSON(moFiles, args.mode, args.output)
 
 var outFileDict = {};
-for outputFormat in args.output.split("|") {
-  outFileDict[outputFormat] = ut.getOutFile(args.mode, args.file, args.output, args.directory, moFiles, jsonDict[outputFormat])
-}
+outputs.forEach(function(outputFormat) {
+  console.log(outputFormat+ " starting")
+  outFileDict[outputFormat] = ut.getOutFile(args.mode, args.file, outputFormat, args.directory, moFiles, jsonDict[outputFormat])
+  console.log(outputFormat+ " success \n")
+});
 
 // // Get the name array of output files
 // var outFile = ut.getOutFile(args.mode, args.file, args.output, args.directory, moFiles, json)
 
-for outputFormat in args.output.split("|") {
+outputs.forEach(function(outputFormat) {
   pa.exportJSON(jsonDict[outputFormat], outFileDict[outputFormat], outputFormat, args.mode, args.directory)
 
   setTimeout(function () { ut.jsonSchemaValidate(args.mode, outFileDict[outputFormat][0], outputFormat) }, 100)
-}
+});
 
 // pa.exportJSON(json, outFile, args.output, args.mode, args.directory)
 
