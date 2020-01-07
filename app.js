@@ -16,7 +16,7 @@ parser.addArgument(
   [ '-o', '--output' ],
   {
     help: 'Specify output format.',
-    choices: ['html', 'raw-json', 'json', 'docx'],
+    // choices: ['html', 'raw-json', 'json', 'docx'],
     defaultValue: 'html'
   }
 )
@@ -72,12 +72,42 @@ logger.level = args.log
 // Get mo files array
 var moFiles = ut.getMoFiles(args.mode, args.file)
 
-// Parse the json representation for moFiles
-var json = pa.getJSON(moFiles, args.mode, args.output)
+var jsonDict = {};
+for outputFormat in args.output.split("|") {
+  if (outputFormat === 'json' || outputFormat === 'html' || outputFormat === 'docx') {
+    if ('json' in json_dict) {
+      jsonDict[outputFormat] = jsonDict['json']
+    }
+    else if ('html' in outputFormat) {
+      jsonDict[outputFormat] = jsonDict['html']
+    }
+    else if ('docx' in outputFormat) {
+      jsonDict[outputFormat] = jsonDict['docx']
+    }
+  }
+  else {
+    // Parse the json representation for moFiles
+    jsonDict[outputFormat] = pa.getJSON(moFiles, args.mode, args.output)
+  }
+}
 
-// Get the name array of output files
-var outFile = ut.getOutFile(args.mode, args.file, args.output, args.directory, moFiles, json)
+// // Parse the json representation for moFiles
+// var json = pa.getJSON(moFiles, args.mode, args.output)
 
-pa.exportJSON(json, outFile, args.output, args.mode, args.directory)
+var outFileDict = {};
+for outputFormat in args.output.split("|") {
+  outFileDict[outputFormat] = ut.getOutFile(args.mode, args.file, args.output, args.directory, moFiles, jsonDict[outputFormat])
+}
 
-setTimeout(function () { ut.jsonSchemaValidate(args.mode, outFile[0], args.output) }, 100)
+// // Get the name array of output files
+// var outFile = ut.getOutFile(args.mode, args.file, args.output, args.directory, moFiles, json)
+
+for outputFormat in args.output.split("|") {
+  pa.exportJSON(jsonDict[outputFormat], outFileDict[outputFormat], outputFormat, args.mode, args.directory)
+
+  setTimeout(function () { ut.jsonSchemaValidate(args.mode, outFileDict[outputFormat][0], outputFormat) }, 100)
+}
+
+// pa.exportJSON(json, outFile, args.output, args.mode, args.directory)
+
+// setTimeout(function () { ut.jsonSchemaValidate(args.mode, outFile[0], args.output) }, 100)
