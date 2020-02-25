@@ -121,6 +121,7 @@ public class Main {
 				throw new Exception(noFilMes);
     	} else {
 				for (String matched : fileSearch.getResult()){
+					// System.out.print("matched: " + matched);
     	    modelicaSource = modelicaSourceCode(matched);
     	    Stored_definition antlrParseOut = null;
     	    try {
