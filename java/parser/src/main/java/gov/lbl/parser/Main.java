@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import java.util.Arrays;
+
 public class Main {
 	List<String> sumResults;
 
@@ -60,6 +62,9 @@ public class Main {
     }
 
     private List<String> moParser(String[] args) throws Exception {
+
+		System.out.println("args: " + Arrays.toString(args));
+
     	String cwDir = System.getProperty("user.dir");
     	String modelicaSource= "";
     	String jsonOut= "";
@@ -82,7 +87,7 @@ public class Main {
     		}
     	} catch (Exception e) {
     		runLog.add(e.getMessage());
-    		this.sumResults = runLog;
+    		this.sumResults = runLog; // this.sumResults can be deleted.
     		throw new Exception(e);
     	}
 
@@ -96,7 +101,7 @@ public class Main {
     	String moFileName = "";
     	String moFileDir = "";
     	Boolean singleMo;
-    	
+	
     	if (Files.isRegularFile(moFilePath)) {
     		singleMo = true;
     		moFileName = moFilePath.getFileName().toString();
@@ -106,6 +111,11 @@ public class Main {
     		moFileName = ".mo";
     		moFileDir = moFilePath.toString();
     	}
+
+		System.out.println("moFileName: " + moFileName);
+		System.out.println("moFilePath: " + moFilePath.toString());
+		System.out.println("moFileDir: " + moFileDir);
+		System.out.println("singleMo: " + String.valueOf(singleMo));
 
     	String dirToBeSearched = moFileDir;
     	Main fileSearch = new Main();
@@ -121,7 +131,7 @@ public class Main {
 				throw new Exception(noFilMes);
     	} else {
 				for (String matched : fileSearch.getResult()){
-					// System.out.print("matched: " + matched);
+					System.out.println("new matched: " + matched);
     	    modelicaSource = modelicaSourceCode(matched);
     	    Stored_definition antlrParseOut = null;
     	    try {
@@ -133,11 +143,14 @@ public class Main {
     	    Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
     	    //Gson gson = new Gson();
     	    jsonOut = gson.toJson(antlrParseOut);
+			System.out.println("jsonOut: " + jsonOut);
     	    if (args.length>2) {
     	    	String jsFile = "";
     	    	String jsFilePath = args[3];
     	    	Path jsPath = Paths.get(cwDir, jsFilePath);
+				System.out.println("jsPath: " + jsPath);
     	    	jsFile = jsPath.getFileName().toString();
+				System.out.println("jsFile: " + jsFile);
     	    	exportJsonFile(matched, moFileName, jsonOut, jsFile, singleMo);
     	    } else {
     	    	System.out.println(jsonOut);
