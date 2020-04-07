@@ -1,0 +1,6 @@
+# For require('antlr4/index') to work
+npm i antlr4
+
+# Use -visitor tag to generate the visitor as well (doesn't install by default)
+antlr4 -Dlanguage=JavaScript -visitor modelica.g4
+

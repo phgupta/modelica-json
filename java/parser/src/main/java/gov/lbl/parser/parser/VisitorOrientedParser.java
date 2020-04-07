@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class VisitorOrientedParser implements Parser {
 
     public Stored_definition parse(String modelicaSourceCode) {
+      System.out.println("parse");
     	CharStream charStream = CharStreams.fromString(modelicaSourceCode);
         modelicaLexer lexer = new modelicaLexer(charStream);
         TokenStream tokens = new CommonTokenStream(lexer);
@@ -34,6 +35,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Stored_definitionVisitor extends modelicaBaseVisitor<Stored_definition> {
       @Override
       public Stored_definition visitStored_definition(modelicaParser.Stored_definitionContext ctx) {
+        System.out.println("visitStored_definition");
         List<String> within_dec = ctx.WITHIN() == null ? null : ctx.WITHIN()           		
                 .stream() 
                 .map(WITHIN -> WITHIN.getText())
@@ -59,6 +61,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Class_definitionVisitor extends modelicaBaseVisitor<Class_definition> {
       @Override
       public Class_definition visitClass_definition(modelicaParser.Class_definitionContext ctx) {
+        System.out.println("visitClass_definition");
         String enca_dec = ctx.ENCAPSULATED() == null ? null : ctx.ENCAPSULATED().getText();       
         Class_prefixesVisitor class_prefixesVisitor = new Class_prefixesVisitor();
         String class_prefixes_1 = ctx.class_prefixes().accept(class_prefixesVisitor);
@@ -71,6 +74,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Class_specifierVisitor extends modelicaBaseVisitor<Class_specifier> {
       @Override
       public Class_specifier visitClass_specifier(modelicaParser.Class_specifierContext ctx) {
+        System.out.println("visitClass_specifier");
         Long_class_specifierVisitor long_class_specifierVisitor = new Long_class_specifierVisitor();
         Long_class_specifier long_class_specifier_1 = 
         		ctx.long_class_specifier() == null ? null : ctx.long_class_specifier().accept(long_class_specifierVisitor);
@@ -87,6 +91,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Class_prefixesVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitClass_prefixes(modelicaParser.Class_prefixesContext ctx) { 	  
+        System.out.println("visitClass_prefixes");
         String partial_dec = 
         		ctx.PARTIAL() == null ? "" : ctx.PARTIAL().getText();
         String class_dec = 
@@ -158,6 +163,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Long_class_specifierVisitor extends modelicaBaseVisitor<Long_class_specifier> {
       @Override
       public Long_class_specifier visitLong_class_specifier(modelicaParser.Long_class_specifierContext ctx) {
+        System.out.println("visitLong_class_specifier");
         List<String> ident = ctx.IDENT()
         		.stream()
         		.map(IDENT -> IDENT.getText())
@@ -178,6 +184,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Short_class_specifierVisitor extends modelicaBaseVisitor<Short_class_specifier> {
       @Override
       public Short_class_specifier visitShort_class_specifier(modelicaParser.Short_class_specifierContext ctx) {
+        System.out.println("visitShort_class_specifier");
         String enum_dec = 
         		ctx.ENUMERATION() == null ? null : ctx.ENUMERATION().getText();
         String ident = ctx.IDENT().getText();
@@ -210,6 +217,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Der_class_specifierVisitor extends modelicaBaseVisitor<Der_class_specifier> {
       @Override
       public Der_class_specifier visitDer_class_specifier(modelicaParser.Der_class_specifierContext ctx) {
+        System.out.println("visitDer_class_specifier");
     	List<String> idents = ctx.IDENT()
     			.stream()
     			.map(IDENT -> IDENT.getText())
@@ -231,6 +239,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Base_prefixVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitBase_prefix(modelicaParser.Base_prefixContext ctx) {
+        System.out.println("visitBase_prefix");
         Type_prefixVisitor type_prefixVisitor = new Type_prefixVisitor();
         String basPreStr = ctx.type_prefix().accept(type_prefixVisitor);
         return basPreStr;
@@ -241,6 +250,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Enum_listVisitor extends modelicaBaseVisitor<Enum_list> {
       @Override
       public Enum_list visitEnum_list(modelicaParser.Enum_listContext ctx) {
+        System.out.println("visitEnum_list");
         Enumeration_literalVisitor enumeration_literalVisitor = new Enumeration_literalVisitor();
         List<Enumeration_literal> enumeration_literal_1 = ctx.enumeration_literal()
                 .stream()
@@ -253,6 +263,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Enumeration_literalVisitor extends modelicaBaseVisitor<Enumeration_literal> {
       @Override
       public Enumeration_literal visitEnumeration_literal(modelicaParser.Enumeration_literalContext ctx) {
+        System.out.println("visitEnumeration_literal");
         String ident = ctx.IDENT().getText();
         CommentVisitor commentVisitor = new CommentVisitor();
         Comment comment_1 = ctx.comment().accept(commentVisitor);
@@ -263,6 +274,7 @@ public class VisitorOrientedParser implements Parser {
     private static class CompositionVisitor extends modelicaBaseVisitor<Composition> {
       @Override
       public Composition visitComposition(modelicaParser.CompositionContext ctx) {
+        System.out.println("visitComposition");
         List<String> public_dec = ctx.PUBLIC() == null ? null : ctx.PUBLIC()
         		.stream()
         		.map(PUBLIC -> PUBLIC.getText())
@@ -324,6 +336,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Language_specificationVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitLanguage_specification(modelicaParser.Language_specificationContext ctx) {
+        System.out.println("visitLanguage_specification");
         String string = ctx.STRING().getText();
         return string;
         //return new Language_specification(ident);
@@ -333,6 +346,7 @@ public class VisitorOrientedParser implements Parser {
     private static class External_function_callVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitExternal_function_call(modelicaParser.External_function_callContext ctx) {
+        System.out.println("visitExternal_function_call");
     	  String ident = ctx.IDENT().getText();
     	  Component_referenceVisitor component_referenceVisitor = new Component_referenceVisitor();
     	  String component_reference_1 = 
@@ -353,6 +367,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Element_listVisitor extends modelicaBaseVisitor<Element_list> {
       @Override
       public Element_list visitElement_list(modelicaParser.Element_listContext ctx) {
+        System.out.println("visitElement_list");
         ElementVisitor elementVisitor = new ElementVisitor();
         List<Element> element_1 = ctx.element() == null ? null : ctx.element()
                 .stream()
@@ -365,6 +380,7 @@ public class VisitorOrientedParser implements Parser {
     private static class ElementVisitor extends modelicaBaseVisitor<Element> {
       @Override
       public Element visitElement(modelicaParser.ElementContext ctx) {
+        System.out.println("visitElement");
         String red_dec = 
         		ctx.REDECLARE() == null ? null : ctx.REDECLARE().getText();
         String final_dec = 
@@ -419,6 +435,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Import_clauseVisitor extends modelicaBaseVisitor<Import_clause> {
       @Override
       public Import_clause visitImport_clause(modelicaParser.Import_clauseContext ctx) {
+        System.out.println("visitImport_clause");
         String import_dec = ctx.IMPORT().getText();
         String ident = 
         		ctx.IDENT() == null ? null : ctx.IDENT().getText();
@@ -439,6 +456,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Import_listVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitImport_list(modelicaParser.Import_listContext ctx) {
+        System.out.println("visitImport_list");
     	  List<String> ident = ctx.IDENT()
     			  .stream()
     			  .map(IDENT -> IDENT.getText())
@@ -460,6 +478,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Extends_clauseVisitor extends modelicaBaseVisitor<Extends_clause> {
       @Override
       public Extends_clause visitExtends_clause(modelicaParser.Extends_clauseContext ctx) {
+        System.out.println("visitExtends_clause");
         String ext_dec = ctx.EXTENDS().getText();
         NameVisitor nameVisitor = new NameVisitor();
         String name_1 = ctx.name().accept(nameVisitor);
@@ -476,6 +495,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Constraining_clauseVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitConstraining_clause(modelicaParser.Constraining_clauseContext ctx) {
+        System.out.println("visitConstraining_clause");
         String constrain_dec = ctx.CONSTRAINEDBY().getText();
         NameVisitor nameVisitor = new NameVisitor();
         String name_1 = ctx.name().accept(nameVisitor);
@@ -494,6 +514,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Component_clauseVisitor extends modelicaBaseVisitor<Component_clause> {
       @Override
       public Component_clause visitComponent_clause(modelicaParser.Component_clauseContext ctx) {
+        System.out.println("visitComponent_clause");
         Type_prefixVisitor type_prefixVisitor = new Type_prefixVisitor();
         String type_prefix_1 = 
         		ctx.type_prefix() == null ? null : ctx.type_prefix().accept(type_prefixVisitor);
@@ -511,6 +532,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Type_prefixVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitType_prefix(modelicaParser.Type_prefixContext ctx) {
+        System.out.println("visitType_prefix");
     	  String flow_dec = 
     			  ctx.FLOW() == null ? null : ctx.FLOW().getText();
     	  String stream_dec = 
@@ -541,6 +563,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Type_specifierVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitType_specifier(modelicaParser.Type_specifierContext ctx) {
+        System.out.println("visitType_specifier");
         NameVisitor nameVisitor = new NameVisitor();
         String specifier = ctx.name().accept(nameVisitor);
         return specifier;
@@ -551,6 +574,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Component_listVisitor extends modelicaBaseVisitor<Component_list> {
       @Override
       public Component_list visitComponent_list(modelicaParser.Component_listContext ctx) {
+        System.out.println("visitComponent_list");
         Component_declarationVisitor component_declarationVisitor = new Component_declarationVisitor();
         List<Component_declaration> component_declaration_1 = ctx.component_declaration()
                 .stream()
@@ -563,6 +587,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Component_declarationVisitor extends modelicaBaseVisitor<Component_declaration> {
       @Override
       public Component_declaration visitComponent_declaration(modelicaParser.Component_declarationContext ctx) {
+        System.out.println("visitComponent_declaration");
         DeclarationVisitor declarationVisitor = new DeclarationVisitor();
         Declaration declaration_1 = ctx.declaration().accept(declarationVisitor);
         Condition_attributeVisitor condition_attributeVisitor = new Condition_attributeVisitor();
@@ -578,6 +603,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Condition_attributeVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitCondition_attribute(modelicaParser.Condition_attributeContext ctx) {
+        System.out.println("visitCondition_attribute");
         String if_dec = ctx.IF().getText();
         ExpressionVisitor expressionVisitor = new ExpressionVisitor();
         String expression_1 = ctx.expression().accept(expressionVisitor);
@@ -591,6 +617,7 @@ public class VisitorOrientedParser implements Parser {
     private static class DeclarationVisitor extends modelicaBaseVisitor<Declaration> {
       @Override
       public Declaration visitDeclaration(modelicaParser.DeclarationContext ctx) {
+        System.out.println("visitDeclaration");
         String ident = ctx.IDENT().getText();
         Array_subscriptsVisitor array_subscriptsVisitor = new Array_subscriptsVisitor();
         String array_subscripts_1 = 
@@ -604,7 +631,8 @@ public class VisitorOrientedParser implements Parser {
 
     private static class ModificationVisitor extends modelicaBaseVisitor<String> {
       @Override
-      public String visitModification(modelicaParser.ModificationContext ctx) {    	  
+      public String visitModification(modelicaParser.ModificationContext ctx) {
+        System.out.println("visitModification");
         Class_modificationVisitor class_modificationVisitor = new Class_modificationVisitor();
         String class_modification_1 = 
         		ctx.class_modification() == null ? null : ctx.class_modification().accept(class_modificationVisitor);
@@ -634,6 +662,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Class_modificationVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitClass_modification(modelicaParser.Class_modificationContext ctx) {
+        System.out.println("visitClass_modification");
         Argument_listVisitor argument_listVisitor = new Argument_listVisitor();
         String argument_list_1 = 
         		ctx.argument_list() == null ? null : ctx.argument_list().accept(argument_listVisitor);
@@ -647,6 +676,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Argument_listVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitArgument_list(modelicaParser.Argument_listContext ctx) {
+        System.out.println("visitArgument_list");
         ArgumentVisitor argumentVisitor = new ArgumentVisitor();
         List<String> argument_1 = ctx.argument()
                 .stream()
@@ -669,6 +699,7 @@ public class VisitorOrientedParser implements Parser {
     private static class ArgumentVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitArgument(modelicaParser.ArgumentContext ctx) {
+        System.out.println("visitArgument");
         Element_modification_or_replaceableVisitor element_modification_or_replaceableVisitor = new Element_modification_or_replaceableVisitor();
         String element_modification_or_replaceable_1 = 
         		ctx.element_modification_or_replaceable() == null ? null : ctx.element_modification_or_replaceable().accept(element_modification_or_replaceableVisitor);
@@ -684,6 +715,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Element_modification_or_replaceableVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitElement_modification_or_replaceable(modelicaParser.Element_modification_or_replaceableContext ctx) {
+        System.out.println("visitElement_modification_or_replaceable");
         String each_dec = 
         		ctx.EACH() == null ? null : ctx.EACH().getText();
         String final_dec = 
@@ -713,6 +745,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Element_modificationVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitElement_modification(modelicaParser.Element_modificationContext ctx) {
+        System.out.println("visitElement_modification");
         NameVisitor nameVisitor = new NameVisitor();
         String name_1 = ctx.name().accept(nameVisitor);
         ModificationVisitor modificationVisitor = new ModificationVisitor();
@@ -734,6 +767,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Element_redeclarationVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitElement_redeclaration(modelicaParser.Element_redeclarationContext ctx) {
+        System.out.println("visitElement_redeclaration");
         String red_dec = ctx.REDECLARE().getText();
         String each_dec = 
         		ctx.EACH() == null ? null : ctx.EACH().getText();
@@ -770,6 +804,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Element_replaceableVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitElement_replaceable(modelicaParser.Element_replaceableContext ctx) {
+        System.out.println("visitElement_replaceable");
         String rep_dec = ctx.REPLACEABLE().getText();
         Short_class_definitionVisitor short_class_definitionVisitor = new Short_class_definitionVisitor();
         String shoClaDefStr = 
@@ -799,6 +834,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Component_clause1Visitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitComponent_clause1(modelicaParser.Component_clause1Context ctx) {
+        System.out.println("visitComponent_clause1");
         Type_prefixVisitor type_prefixVisitor = new Type_prefixVisitor();
         String type_prefix_1 = ctx.type_prefix().accept(type_prefixVisitor);
         Type_specifierVisitor type_specifierVisitor = new Type_specifierVisitor();
@@ -820,6 +856,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Component_declaration1Visitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitComponent_declaration1(modelicaParser.Component_declaration1Context ctx) {
+        System.out.println("visitComponent_declaration1");
     	  String declaration_1 = "";
     	  if (ctx.declaration().getText().isEmpty()) {
     		  declaration_1 = null;
@@ -843,6 +880,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Short_class_definitionVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitShort_class_definition(modelicaParser.Short_class_definitionContext ctx) {
+        System.out.println("visitShort_class_definition");
         Class_prefixesVisitor class_prefixesVisitor = new Class_prefixesVisitor();
         String class_prefixes_1 
         	= ctx.class_prefixes().accept(class_prefixesVisitor);
@@ -901,6 +939,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Equation_sectionVisitor extends modelicaBaseVisitor<Equation_section> {
       @Override
       public Equation_section visitEquation_section(modelicaParser.Equation_sectionContext ctx) {
+        System.out.println("visitEquation_section");
         String init_dec = 
         		ctx.INITIAL() == null ? null : ctx.INITIAL().getText();
         String equ_dec = ctx.EQUATION().getText();
@@ -916,6 +955,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Algorithm_sectionVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitAlgorithm_section(modelicaParser.Algorithm_sectionContext ctx) {
+        System.out.println("visitAlgorithm_section");
         String init_dec = 
         		ctx.INITIAL() == null ? null : ctx.INITIAL().getText();
         String alg_dec = ctx.ALGORITHM().getText();
@@ -943,6 +983,7 @@ public class VisitorOrientedParser implements Parser {
     private static class EquationVisitor extends modelicaBaseVisitor<Equation> {
       @Override
       public Equation visitEquation(modelicaParser.EquationContext ctx) {
+        System.out.println("visitEquation");
         Simple_expressionVisitor simple_expressionVisitor = new Simple_expressionVisitor();
         String simple_expression_1 = 
         		ctx.simple_expression() == null ? null : ctx.simple_expression().accept(simple_expressionVisitor);
@@ -978,6 +1019,7 @@ public class VisitorOrientedParser implements Parser {
     private static class StatementVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitStatement(modelicaParser.StatementContext ctx) {
+        System.out.println("visitStatement");
         String bre_dec = 
         		ctx.BREAK() == null ? "" : ctx.BREAK().getText();
         String ret_dec = 
@@ -1031,6 +1073,7 @@ public class VisitorOrientedParser implements Parser {
     private static class If_equationVisitor extends modelicaBaseVisitor<String> {   	
 	@Override
       public String visitIf_equation(modelicaParser.If_equationContext ctx) {
+        System.out.println("visitIf_equation");
     	  String temStr = "";
     	  if (ctx.getText().isEmpty()) {
     		  temStr = null;
@@ -1049,6 +1092,7 @@ public class VisitorOrientedParser implements Parser {
     private static class If_statementVisitor extends modelicaBaseVisitor<String> {
 	@Override
       public String visitIf_statement(modelicaParser.If_statementContext ctx) {
+        System.out.println("visitIf_statement");
     	   String temStr = "";
      	   if (ctx.getText().isEmpty()) {
      		   temStr = null;
@@ -1067,6 +1111,7 @@ public class VisitorOrientedParser implements Parser {
     private static class For_equationVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitFor_equation(modelicaParser.For_equationContext ctx) {
+        System.out.println("visitFor_equation");
     	  String temStr = "";
     	   if (ctx.getText().isEmpty()) {
     		   temStr = null;
@@ -1085,6 +1130,7 @@ public class VisitorOrientedParser implements Parser {
     private static class For_statementVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitFor_statement(modelicaParser.For_statementContext ctx) {
+        System.out.println("visitFor_statement");
     	  String temStr = "";
     	  if (ctx.getText().isEmpty()) {
     		  temStr = null;
@@ -1103,6 +1149,7 @@ public class VisitorOrientedParser implements Parser {
     private static class For_indicesVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitFor_indices(modelicaParser.For_indicesContext ctx) {
+        System.out.println("visitFor_indices");
     	  For_indexVisitor for_indexVisitor = new For_indexVisitor();
     	  List<String> for_index_1 = ctx.for_index()
     			  .stream()
@@ -1123,6 +1170,7 @@ public class VisitorOrientedParser implements Parser {
     private static class For_indexVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitFor_index(modelicaParser.For_indexContext ctx) {
+        System.out.println("visitFor_index");
         String ident = ctx.IDENT().getText();
         ExpressionVisitor expressionVisitor = new ExpressionVisitor();
         String expression_1 = 
@@ -1140,6 +1188,7 @@ public class VisitorOrientedParser implements Parser {
     private static class While_statementVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitWhile_statement(modelicaParser.While_statementContext ctx) {
+        System.out.println("visitWhile_statement");
     	  String temStr = "";
    	   if (ctx.getText().isEmpty()) {
    		   temStr = null;
@@ -1157,7 +1206,8 @@ public class VisitorOrientedParser implements Parser {
 
     private static class When_equationVisitor extends modelicaBaseVisitor<String> {
       @Override
-      public String visitWhen_equation(modelicaParser.When_equationContext ctx) {  
+      public String visitWhen_equation(modelicaParser.When_equationContext ctx) { 
+        System.out.println("visitWhen_equation"); 
     	  String temStr = "";
    	   if (ctx.getText().isEmpty()) {
    		   temStr = null;
@@ -1176,6 +1226,7 @@ public class VisitorOrientedParser implements Parser {
     private static class When_statementVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitWhen_statement(modelicaParser.When_statementContext ctx) {
+        System.out.println("visitWhen_statement");
     	  String temStr = "";
    	   if (ctx.getText().isEmpty()) {
    		   temStr = null;
@@ -1194,6 +1245,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Connect_clauseVisitor extends modelicaBaseVisitor<Connect_clause> {
       @Override
       public Connect_clause visitConnect_clause(modelicaParser.Connect_clauseContext ctx) {
+        System.out.println("visitConnect_clause");
         Component_referenceVisitor component_referenceVisitor = new Component_referenceVisitor();
         List<String> component_reference_1 = ctx.component_reference()
                 .stream()
@@ -1206,6 +1258,7 @@ public class VisitorOrientedParser implements Parser {
     private static class ExpressionVisitor extends modelicaBaseVisitor<String> {
 	@Override
       public String visitExpression(modelicaParser.ExpressionContext ctx) {
+        System.out.println("visitExpression");
 		String temStr = "";
  	   if (ctx.getText().isEmpty()) {
  		   temStr = null;
@@ -1225,6 +1278,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Simple_expressionVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitSimple_expression(modelicaParser.Simple_expressionContext ctx) {
+        System.out.println("visitSimple_expression");
     	  String temStr = "";
     	   if (ctx.getText().isEmpty()) {
     		   temStr = null;
@@ -1243,6 +1297,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Logical_expressionVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitLogical_expression(modelicaParser.Logical_expressionContext ctx) {
+        System.out.println("visitLogical_expression");
     	  List<String> or_decs = ctx.OR() == null ? null : ctx.OR()
     			  .stream()
     			  .map(OR -> OR.getText())
@@ -1267,6 +1322,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Logical_termVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitLogical_term(modelicaParser.Logical_termContext ctx) {
+        System.out.println("visitLogical_term");
     	  List<String> and_decs = ctx.AND() == null ? null : ctx.AND()
     			  .stream()
     			  .map(AND -> AND.getText())
@@ -1291,6 +1347,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Logical_factorVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitLogical_factor(modelicaParser.Logical_factorContext ctx) {
+        System.out.println("visitLogical_factor");
         String not_dec = 
         		ctx.NOT() == null ? null : ctx.NOT().getText();
         RelationVisitor relationVisitor = new RelationVisitor();
@@ -1306,6 +1363,7 @@ public class VisitorOrientedParser implements Parser {
     private static class RelationVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitRelation(modelicaParser.RelationContext ctx) {
+        System.out.println("visitRelation");
     	  Arithmetic_expressionVisitor arithmetic_expressionVisitor = new Arithmetic_expressionVisitor();
     	  List<String> arithmetic_expressions = ctx.arithmetic_expression()
     			  .stream()
@@ -1327,6 +1385,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Rel_opVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitRel_op(modelicaParser.Rel_opContext ctx) {
+        System.out.println("visitRel_op");
     	String relOpe = ctx.getText();  
     	return relOpe;
         //return new Rel_op(ope_dec);
@@ -1336,6 +1395,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Arithmetic_expressionVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitArithmetic_expression(modelicaParser.Arithmetic_expressionContext ctx) {
+        System.out.println("visitArithmetic_expression");
     	  Add_opVisitor add_opVisitor = new Add_opVisitor();
     	  List<String> add_ops = ctx.add_op() == null ? null : ctx.add_op()
     			  .stream()
@@ -1365,6 +1425,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Add_opVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitAdd_op(modelicaParser.Add_opContext ctx) {
+        System.out.println("visitAdd_op");
     	String addOpe = ctx.getText(); 
     	return addOpe;
         //return new Add_op(add_dec);
@@ -1374,6 +1435,7 @@ public class VisitorOrientedParser implements Parser {
     private static class TermVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitTerm(modelicaParser.TermContext ctx) {
+        System.out.println("visitTerm");
         Mul_opVisitor mul_opVisitor = new Mul_opVisitor();
         List<String> mul_op_1 = ctx.mul_op() == null ? null : ctx.mul_op()
                 .stream()
@@ -1398,7 +1460,8 @@ public class VisitorOrientedParser implements Parser {
 
     private static class Mul_opVisitor extends modelicaBaseVisitor<String> {
       @Override
-      public String visitMul_op(modelicaParser.Mul_opContext ctx) {  			  	
+      public String visitMul_op(modelicaParser.Mul_opContext ctx) {  	
+        System.out.println("visitMul_op");		  	
         String mulOpe = ctx.getText(); 
         return mulOpe;
         //return new Mul_op(mul_dec);
@@ -1408,6 +1471,7 @@ public class VisitorOrientedParser implements Parser {
     private static class FactorVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitFactor(modelicaParser.FactorContext ctx) {
+        System.out.println("visitFactor");
     	  PrimaryVisitor primaryVisitor = new PrimaryVisitor();
     	  List<String> primarys = ctx.primary()
     			  .stream()
@@ -1438,6 +1502,7 @@ public class VisitorOrientedParser implements Parser {
     private static class PrimaryVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitPrimary(modelicaParser.PrimaryContext ctx) {
+        System.out.println("visitPrimary");
         String num_dec = 
         		ctx.UNSIGNED_NUMBER() == null ? null : ctx.UNSIGNED_NUMBER().getText();
         String str_dec = 
@@ -1515,6 +1580,7 @@ public class VisitorOrientedParser implements Parser {
     private static class NameVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitName(modelicaParser.NameContext ctx) {
+        System.out.println("visitName");
     	List<String> dots = ctx.SYMBOL_DOT()==null ? null : ctx.SYMBOL_DOT()
     			.stream()
     			.map(SYMBOL_DOT -> SYMBOL_DOT.getText())
@@ -1546,6 +1612,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Component_referenceVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitComponent_reference(modelicaParser.Component_referenceContext ctx) {
+        System.out.println("visitComponent_reference");
     	  String temStr = "";
     	   if (ctx.getText().isEmpty()) {
     		   temStr = null;
@@ -1564,6 +1631,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Function_call_argsVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitFunction_call_args(modelicaParser.Function_call_argsContext ctx) {
+        System.out.println("visitFunction_call_args");
         Function_argumentsVisitor function_argumentsVisitor = new Function_argumentsVisitor();
         String function_arguments = 
         		ctx.function_arguments() == null ? "" : ctx.function_arguments().accept(function_argumentsVisitor);
@@ -1578,6 +1646,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Function_argumentsVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitFunction_arguments(modelicaParser.Function_argumentsContext ctx) {
+        System.out.println("visitFunction_arguments");
         Function_argumentVisitor function_argumentVisitor = new Function_argumentVisitor();
         String function_argument = 
         		ctx.function_argument() == null ? null : ctx.function_argument().accept(function_argumentVisitor);
@@ -1613,6 +1682,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Named_argumentsVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitNamed_arguments(modelicaParser.Named_argumentsContext ctx) {
+        System.out.println("visitNamed_arguments");
         Named_argumentVisitor named_argumentVisitor = new Named_argumentVisitor();
         String named_argument = 
         		ctx.named_argument().accept(named_argumentVisitor);
@@ -1636,6 +1706,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Named_argumentVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitNamed_argument(modelicaParser.Named_argumentContext ctx) {
+        System.out.println("visitNamed_argument");
     	  String ident = ctx.IDENT().getText();
     	  Function_argumentVisitor function_argumentVisitor = new Function_argumentVisitor();
     	  String function_argument = 
@@ -1652,6 +1723,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Function_argumentVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitFunction_argument(modelicaParser.Function_argumentContext ctx) {
+        System.out.println("visitFunction_argument");
     	  String fun_dec = 
     			  ctx.FUNCTION() == null ? null : ctx.FUNCTION().getText();
     	  NameVisitor nameVisitor = new NameVisitor();
@@ -1678,6 +1750,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Output_expression_listVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitOutput_expression_list(modelicaParser.Output_expression_listContext ctx) {
+        System.out.println("visitOutput_expression_list");
     	  String temStr = "";
     	   if (ctx.getText().isEmpty()) {
     		   temStr = null;
@@ -1696,6 +1769,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Expression_listVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitExpression_list(modelicaParser.Expression_listContext ctx) {
+        System.out.println("visitExpression_list");
         ExpressionVisitor expressionVisitor = new ExpressionVisitor();
         List<String> expression_1 = ctx.expression()
               .stream()
@@ -1716,6 +1790,7 @@ public class VisitorOrientedParser implements Parser {
     private static class Array_subscriptsVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitArray_subscripts(modelicaParser.Array_subscriptsContext ctx) {
+        System.out.println("visitArray_subscripts");
     	  SubscriptVisitor subscriptVisitor = new SubscriptVisitor();
     	  List<String> subscript_1 = ctx.subscript()
     			  .stream()
@@ -1746,6 +1821,7 @@ public class VisitorOrientedParser implements Parser {
     private static class SubscriptVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitSubscript(modelicaParser.SubscriptContext ctx) {
+        System.out.println("visitSubscript");
     	  String colon = 
     			  ctx.SYMBOL_COLON() == null ? null : ctx.SYMBOL_COLON().getText();
     	  ExpressionVisitor expressionVisitor = new ExpressionVisitor();
@@ -1763,6 +1839,7 @@ public class VisitorOrientedParser implements Parser {
     	String annotation1;
       @Override
       public Comment visitComment(modelicaParser.CommentContext ctx) {
+        System.out.println("visitComment");
         String_commentVisitor string_commentVisitor = new String_commentVisitor();
         String string_comment1 = 
         		ctx.string_comment() == null ? null : ctx.string_comment().accept(string_commentVisitor);
@@ -1778,6 +1855,7 @@ public class VisitorOrientedParser implements Parser {
     public static class String_commentVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitString_comment(modelicaParser.String_commentContext ctx) {
+        System.out.println("visitString_comment");
         List<String> str_dec = ctx.STRING() == null ? null : ctx.STRING()
         		.stream()
         		.map(STRING -> STRING.getText())
@@ -1801,6 +1879,7 @@ public class VisitorOrientedParser implements Parser {
     public static class AnnotationVisitor extends modelicaBaseVisitor<String> {
       @Override
       public String visitAnnotation(modelicaParser.AnnotationContext ctx) {
+        System.out.println("visitAnnotation");
     	String ann_dec = ctx.ANNOTATION().getText();
         Class_modificationVisitor class_modificationVisitor = new Class_modificationVisitor();
         String class_modification = ctx.class_modification().accept(class_modificationVisitor);

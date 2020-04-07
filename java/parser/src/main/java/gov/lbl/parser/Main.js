@@ -114,8 +114,9 @@ function moParser(args) {
 
                 // var antlrParseOut = new StoredDefinition();
                 try {
-                    var antlrParseOut = new VisitorOrientedParser().parse(modelicaSource);
+                    var antlrParseOut = new VisitorOrientedParser.VisitorOrientedParserClass().parse(content);
                 } catch (error) {
+                    console.log('error: ', error);
                     log.push(error.message);
                     throw error.message;
                 }

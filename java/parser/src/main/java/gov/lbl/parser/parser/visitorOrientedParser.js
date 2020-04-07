@@ -1,3 +1,82 @@
+const Parser = require('./Parser.js');
+// const StoredDefinition = require('../domain/storedDefinition.js');
+const ModelicaParser = require('../../../../../../../../antlrVisitor/src/main/antlr4/gov/lbl/antlr4/visitor/modelicaParser.js');
+const ModelicaLexer = require('../../../../../../../../antlrVisitor/src/main/antlr4/gov/lbl/antlr4/visitor/modelicaLexer.js');
+const ModelicaVisitor = require('../../../../../../../../antlrVisitor/src/main/antlr4/gov/lbl/antlr4/visitor/modelicaVisitor.js');
+const antlr4 = require('antlr4/index');
+
+/**
+ * NOTE
+ * 1. Class declarations aren't hoisted so they can't be used before they are defined in the code.
+ */
+
+class VisitorOrientedParser extends Parser.ParserClass {
+
+    // To Do for Block1.mo to work and test
+    // parse
+    // visitStored_definition
+    // visitName
+    // visitClass_definition
+    // visitClass_prefixes
+    // visitClass_specifier
+    // visitLong_class_specifier
+    // visitString_comment
+    // visitComposition
+    // visitElement_list
+
+    constructor() { super() }
+
+    parse(modelicaSourceCode) {
+
+        const chars = new antlr4.InputStream(modelicaSourceCode);
+        const lexer = new ModelicaLexer.modelicaLexer(chars);
+        const tokens = new antlr4.CommonTokenStream(lexer);
+        const parser = new ModelicaParser.modelicaParser(tokens);
+
+        // console.log('chars: ', chars);
+        // console.log('lexer: ', lexer);
+        // console.log('tokens: ', tokens);
+        // console.log('parser: ', parser);
+
+        const storedDefinitionVisitor = new StoredDefinitionVisitor();
+        const traverseResult = storedDefinitionVisitor.visit(parser.stored_definition);
+        return traverseResult;
+
+        // Stored_definitionVisitor stored_definitionVisitor = new Stored_definitionVisitor();
+        // Stored_definition traverseResult = stored_definitionVisitor.visit(parser.stored_definition());
+        // return traverseResult;
+    }
+}
+
+class StoredDefinitionVisitor extends ModelicaVisitor.modelicaVisitor {
+    
+    constructor() { super() }
+
+    visitStored_definition(ctx) {
+        // List<String> within_dec = ctx.WITHIN() == null ? null : ctx.WITHIN()           		
+        //         .stream() 
+        //         .map(WITHIN -> WITHIN.getText())
+        //         .collect(toList());
+        // NameVisitor nameVisitor = new NameVisitor();
+        // List<String> names = ctx.name() == null ? null : ctx.name()
+        //         .stream()
+        //         .map(name -> name.accept(nameVisitor))
+        //         .collect(toList());
+        // List<String> final_dec = ctx.FINAL() == null ? null : ctx.FINAL()
+        //         .stream()
+        //         .map(FINAL -> FINAL.getText())
+        //         .collect(toList());
+        // Class_definitionVisitor class_definitionVisitor = new Class_definitionVisitor();
+        // List<Class_definition> class_definitions = ctx.class_definition()
+        //         .stream()
+        //         .map(class_definition -> class_definition.accept(class_definitionVisitor))
+        //         .collect(toList());
+        // return new Stored_definition(within_dec, final_dec, names, class_definitions);
+    }
+}
+
+module.exports = { VisitorOrientedParserClass: VisitorOrientedParser }
+
 // package gov.lbl.parser.parser;
 
 // import gov.lbl.antlr4.visitor.modelicaBaseVisitor;
